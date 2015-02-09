@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'adjective'
+
+bill = Person.new("Bill", 45, 168, "5'8", 10)
+
+display = MainDisplay.new(bill)
