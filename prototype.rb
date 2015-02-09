@@ -8,7 +8,6 @@ class MainDisplay
 
 	def display_ui
 
-		puts "~Welcome to the Shitshow!"
 		puts "You can do these skills:"
 		@person.print_skills
 		puts " "
@@ -82,12 +81,6 @@ class Person
 		throw_distance = (@skill * 3).to_s
 		# puts @name + " threw the ball #{throw_distance} feet."
 		@skill += 1
-	end
-
-	def take_a_shit
-		puts ""
-		puts @name + " took a big ol' shit."
-		puts ""
 	end
 
 	def sleep(hours)
