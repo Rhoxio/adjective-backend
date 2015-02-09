@@ -24,7 +24,10 @@ class MainDisplay
 			@person.eat_food(food)
 			display_ui
 		elsif input == 'sleep'
-			@person.sleep(8)
+			puts "How many hours would you like to sleep?"
+			hours = gets.chomp.downcase
+			hours = hours.tr(',','').to_i
+			@person.sleep(hours)
 			display_ui
 		elsif input == 'shit'
 			@person.take_a_shit
