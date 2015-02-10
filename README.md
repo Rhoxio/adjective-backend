@@ -1,16 +1,17 @@
-> **Note**: This branch (master) contains a skeleton without any app code, perfect for creating a _new_ application or challenge. If you're looking for an example app built with this skeleton, take a look at the [example](/../..//tree/example) branch which includes basic CRUD and RSpec tests.
+# Adjective 
 
-### Purpose
-The Sinatra Skeleton:
+> **Note**: This is not a complete product until release 1.0.0 at the earliest. I am still in the drafting phases of work, and will update it as regularly as humanly possible. For now, I have simple models for objects set up and ready for customization. 
 
-1. Provides a foundation for building challenges or creating a new Sinatra application.
-2. Demonstrates a reasonable set of practices around building Sinatra applications.
-3. Eases the transition to Rails for Dev Bootcamp students
+### Purpose of this Project
+
+Adjective is a game engine started by myself to help alleviate some of the monotony you have to deal with when making an RPG from scratch. Much of the system makes it simple for anyone, even relative beginners, to get a simple game going as quickly as possible. Instead of focusing on graphics and more 'showy' aspects of game development, this package is intended to be used to set up your backend API and/or server. 
+
+It is written in mostly Javascript and Ruby. I am still deciding on what libraries I am going to use for the UI elements, but I think that Famo.us has an awesome system set up. 
 
 ### Quickstart
 
 1.  `bundle install`
-2.  `shotgun config.ru`
+2.  `be shotgun`
 
 As needed, create models & migrations with the `rake` tasks:
 
@@ -21,10 +22,6 @@ rake generate:model      # Create an empty model in app/models, e.g., rake gener
 
 ### Contributing
 
-We would love for you to help make the skeleton more awesome, There are three ways to contribute:
+Let me know if you'd like to make a contribution to Adjective. I am open to any design or techincal suggestions. 
 
-1. Ask for a bug fix or enhancement!
-2. Submit a pull request for a bug fix or enhancement!
-3. Code review an open pull request!
-
-Be prepared to give and receive specific, actionable, and kind feedback!
+Be explicit in your pull request if so. Thanks!
