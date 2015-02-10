@@ -31,7 +31,6 @@ def create_character(model_path, model_name)
           end
         end
 
-
         def give_currency(amount) 
           if self.currency >= amount
             self.currency -= amount
@@ -82,10 +81,45 @@ end
 
 def create_migration(migration_name, migration_path)
   name = migration_name[6..-1]
+  table_name = name.downcase + "s" 
+  # Because I don't trust the ActiveRecord pluralization engine... 
   File.open(migration_path, 'w+') do |f|
     f.write(<<-EOF.strip_heredoc)
       class #{migration_name} < ActiveRecord::Migration
         def change
+
+          create_table :#{table_name} do |t|
+            t.string :name
+            t.string :player_class
+            t.string :gender
+            t.integer :currency
+
+            t.integer :level
+            t.integer :exp
+
+            t.integer :max_hp
+            t.integer :current_hp
+
+            t.integer :skill
+            t.integer :skill_exp
+            
+            t.integer :attack_rating
+            t.integer :initiative
+            t.integer :defense
+
+            t.string :avatar            
+            t.string :headshot
+
+            t.integer :location, :array => true
+
+            t.integer :weapon_id
+            t.integer :shield_id
+
+            t.string :user_id
+
+            t.timestamps
+          end
+
         end
       end
     EOF
