@@ -127,9 +127,84 @@ def create_migration(migration_name, migration_path)
   puts "Created template Active Record migration for #{name}"
 end
 
+def create_enemy(enemy_path, enemy_name)
+  File.open(enemy_path, 'w+') do |f|
+    f.write(<<-EOF.strip_heredoc)
+      class #{enemy_name} < ActiveRecord::Base
+        # Model methods get generated here.
+
+          def enemy_currency
+            self.currency = (self.level * 2) + rand(-2..5)
+          end
+
+          def dead? 
+            if self.current_hp <= 0
+              return true
+            else
+              return false
+            end
+          end
+
+          def heal(healing)
+            if self.dead? == false
+              self.current_hp += healing
+              if self.current_hp > self.max_hp
+                diff = self.current_hp - self.max_hp
+                self.current_hp = self.current_hp - diff
+              end
+            else
+              return false
+            end
+          end
+
+      end
+      # End of File
+    EOF
+  end
+  puts "Created template Active Record enemy model for #{enemy_name}"
+end
+
+def create_enemy_migration(migration_name, migration_path)
+  name = migration_name[6..-1]
+  table_name = name.downcase + "s"
+  # Because I don't trust the ActiveRecord pluralization engine... 
+  File.open(migration_path, 'w+') do |f|
+    f.write(<<-EOF.strip_heredoc)
+      class #{migration_name} < ActiveRecord::Migration
+        def change
+        create_table :#{table_name} do |t|
+        t.string :name
+        t.string :enemy_class
+        t.string :avatar
+
+        t.integer :level
+        t.integer :exp
+
+        t.integer :max_hp
+        t.integer :current_hp
+         
+        t.integer :skill
+
+        t.integer :attack_rating
+        t.integer :initiative
+        t.integer :defense
+
+        t.integer :currency
+
+        t.timestamps
+        end
+      end
+    end
+    EOF
+  end
+  puts "Created template Active Record migration for #{name}"
+end
+
 
 namespace :generate do
-  desc "rake generate:model NAME=User"
+
+# Character Template Generator
+  desc "rake generate:character NAME=User"
   task :character do
 
     unless ENV.has_key?('NAME')
@@ -153,23 +228,80 @@ namespace :generate do
 
   end
 
+# Enemy Template Generator
+  desc "rake generate:enemy NAME=enemy"
+  task :enemy do
 
+    unless ENV.has_key?('NAME')
+      raise "Must specificy model name, e.g., rake generate:character NAME=character"
+    end
 
+    enemy_name     = ENV['NAME'].camelize
+    enemy_filename = ENV['NAME'].underscore + '.rb'
+    enemy_path     = APP_ROOT.join('app', 'models', enemy_filename)
 
+    migration_name = "Create" + ENV['NAME'].capitalize
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_" + ENV['NAME'].underscore]
+    migration_path = APP_ROOT.join('db', 'migrate', filename)
 
+    if File.exist?(enemy_path)
+      raise "ERROR: Model file '#{model_path}' already exists"
+    end
 
-
-
-  desc "Create an empty migration in db/migrate, e.g., rake generate:migration NAME=create_tasks"
-  task :migration do
-
+    create_enemy(enemy_path, enemy_name)
+    create_enemy_migration(migration_name, migration_path)
   end
 
 
+# Empty Migration Generator
+  desc "Create an empty migration in db/migrate, e.g., rake generate:migration NAME=tasks"
+  task :empty_migration do
+    unless ENV.has_key?('NAME')
+      raise "Must specificy migration name, e.g., rake generate:migration NAME=create_tasks"
+    end
 
+    migration_name = "Create" + ENV['NAME'].capitalize
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_" + ENV['NAME'].underscore]
+    migration_path = APP_ROOT.join('db', 'migrate', filename)
 
+    if File.exist?(migration_path)
+      raise "ERROR: File '#{migration_path}' already exists"
+    end
 
+    puts "Creating #{migration_path}"
+    File.open(migration_path, 'w+') do |f|
+      f.write(<<-EOF.strip_heredoc)
+        class #{migration_name} < ActiveRecord::Migration
+          def change
+          end
+        end
+      EOF
+    end
+  end
 
+  desc "Create an empty model in app/models, e.g., rake generate:model NAME=User"
+  task :empty_model do
+    unless ENV.has_key?('NAME')
+      raise "Must specificy model name, e.g., rake generate:model NAME=User"
+    end
+
+    model_name     = ENV['NAME'].camelize
+    model_filename = ENV['NAME'].underscore + '.rb'
+    model_path = APP_ROOT.join('app', 'models', model_filename)
+
+    if File.exist?(model_path)
+      raise "ERROR: Model file '#{model_path}' already exists"
+    end
+
+    puts "Creating #{model_path}"
+    File.open(model_path, 'w+') do |f|
+      f.write(<<-EOF.strip_heredoc)
+        class #{model_name} < ActiveRecord::Base
+          # Remember to create a migration!
+        end
+      EOF
+    end
+  end
 
 
   desc "Create an empty model spec in spec, e.g., rake generate:spec NAME=user"
