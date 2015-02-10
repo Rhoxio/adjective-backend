@@ -15,6 +15,7 @@ require 'pg'
 require 'active_record'
 require 'logger'
 require 'hirb'
+require 'adjective'
 
 require 'sinatra'
 require "sinatra/reloader" if development?

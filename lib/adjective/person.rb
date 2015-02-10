@@ -1,9 +1,3 @@
-class Test
-	def self.test_stuff
-		puts "Working!"
-	end
-end
-
 class Person
 
 	attr_accessor :name, :age, :height, :weight, :currently_earned_skills, :actions, :hunger
