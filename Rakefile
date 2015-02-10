@@ -5,55 +5,138 @@ require ::File.expand_path('../config/environment', __FILE__)
 # Include all of ActiveSupport's core class extensions, e.g., String#camelize
 require 'active_support/core_ext'
 
+def create_character(model_path, model_name)
+  File.open(model_path, 'w+') do |f|
+    f.write(<<-EOF.strip_heredoc)
+      class #{model_name} < ActiveRecord::Base
+        # Model methods get generated here.
+
+        def level_up
+          level_table = {1 => 10, 2 => 50, 3 => 100, 4 => 175, 5 => 260, 6 => 365, 7 => 480, 8 => 630, 9 => 830, 10 => 1010}
+
+          # Need to make this class-specific. 
+
+          if self.exp >= level_table[self.level]
+            self.exp = self.exp - level_table[self.level]
+            self.level += 1
+            self.max_hp += 20
+            self.defense += 1
+            self.initiative += 1
+            self.attack_rating += 2
+            self.current_hp = self.max_hp
+            self.save!
+            return true
+          else
+            return false
+          end
+        end
+
+
+        def give_currency(amount) 
+          if self.currency >= amount
+            self.currency -= amount
+          else
+            return "Not enough currency..."
+          end
+        end
+
+        def acquire_currency(amount)
+          self.currency += amount
+          self.save!
+        end
+
+        def dead?
+          if self.current_hp <= 0
+            return true
+          else
+            return false
+          end
+        end
+
+        def heal(healing)
+          if self.dead? == false
+            self.current_hp += healing
+            self.save!
+            if self.current_hp > self.max_hp
+              diff = self.current_hp - self.max_hp
+              self.current_hp = self.current_hp - diff
+              self.save!
+            end
+          return self.current_hp
+
+          else
+            return false
+          end
+
+        end
+
+        def located?
+          self.location
+        end
+      end
+      # End of File
+    EOF
+  end
+  puts "Created template Active Record model for #{model_name}"
+end
+
+def create_migration(migration_name, migration_path)
+  name = migration_name[6..-1]
+  File.open(migration_path, 'w+') do |f|
+    f.write(<<-EOF.strip_heredoc)
+      class #{migration_name} < ActiveRecord::Migration
+        def change
+        end
+      end
+    EOF
+  end
+  puts "Created template Active Record migration for #{name}"
+end
+
+
 namespace :generate do
-  desc "Create an empty model in app/models, e.g., rake generate:model NAME=User"
-  task :model do
+  desc "rake generate:model NAME=User"
+  task :character do
+
     unless ENV.has_key?('NAME')
-      raise "Must specificy model name, e.g., rake generate:model NAME=User"
+      raise "Must specificy model name, e.g., rake generate:character NAME=character"
     end
 
     model_name     = ENV['NAME'].camelize
     model_filename = ENV['NAME'].underscore + '.rb'
-    model_path = APP_ROOT.join('app', 'models', model_filename)
+    model_path     = APP_ROOT.join('app', 'models', model_filename)
+
+    migration_name = "Create" + ENV['NAME'].capitalize
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_" + ENV['NAME'].underscore]
+    migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(model_path)
       raise "ERROR: Model file '#{model_path}' already exists"
     end
 
-    puts "Creating #{model_path}"
-    File.open(model_path, 'w+') do |f|
-      f.write(<<-EOF.strip_heredoc)
-        class #{model_name} < ActiveRecord::Base
-          # Remember to create a migration!
-        end
-      EOF
-    end
+    create_character(model_path, model_name)
+    create_migration(migration_name, migration_path)
+
   end
+
+
+
+
+
+
+
 
   desc "Create an empty migration in db/migrate, e.g., rake generate:migration NAME=create_tasks"
   task :migration do
-    unless ENV.has_key?('NAME')
-      raise "Must specificy migration name, e.g., rake generate:migration NAME=create_tasks"
-    end
 
-    name     = ENV['NAME'].camelize
-    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), ENV['NAME'].underscore]
-    path     = APP_ROOT.join('db', 'migrate', filename)
-
-    if File.exist?(path)
-      raise "ERROR: File '#{path}' already exists"
-    end
-
-    puts "Creating #{path}"
-    File.open(path, 'w+') do |f|
-      f.write(<<-EOF.strip_heredoc)
-        class #{name} < ActiveRecord::Migration
-          def change
-          end
-        end
-      EOF
-    end
   end
+
+
+
+
+
+
+
 
   desc "Create an empty model spec in spec, e.g., rake generate:spec NAME=user"
   task :spec do
