@@ -37,10 +37,10 @@ module Adjective
 
 	class BuildModel
 
-		def self.create_character(model_path, model_name)
-		  File.open(model_path, 'w+') do |f|
+		def self.create_character(path, name)
+		  File.open(path, 'w+') do |f|
 		    f.write(<<-EOF.strip_heredoc)
-		      class #{model_name} < ActiveRecord::Base
+		      class #{name} < ActiveRecord::Base
 		        # Model methods get generated here.
 
 		        def level_up
@@ -108,13 +108,13 @@ module Adjective
 		      # End of File
 		    EOF
 		  end
-		  puts "Created template Active Record model for #{model_name}"
+		  puts "Created template Active Record model for #{name}"
 		end
 
-		def self.create_enemy(enemy_path, enemy_name)
-		  File.open(enemy_path, 'w+') do |f|
+		def self.create_enemy(path, name)
+		  File.open(path, 'w+') do |f|
 		    f.write(<<-EOF.strip_heredoc)
-		      class #{enemy_name} < ActiveRecord::Base
+		      class #{name} < ActiveRecord::Base
 		        # Model methods get generated here.
 
 		          def enemy_currency
@@ -145,19 +145,51 @@ module Adjective
 		      # End of File
 		    EOF
 		  end
-		  puts "Created template Active Record enemy model for #{enemy_name}"
+		  puts "Created template Active Record enemy model for #{name}"
 		end
+
+		def self.create_user(path, name)
+			File.open(path, 'w+') do |f|
+		    f.write(<<-EOF.strip_heredoc)
+		      class #{name} < ActiveRecord::Base
+		    
+		      	  has_many :characters
+
+						  include BCrypt
+
+						  validates :email, uniqueness: true
+
+						  validates :name, :password_hash, presence: true
+
+						  validates :email, presence: true, :format => { :with => /\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}/}
+
+						  def password
+						    @password ||= Password.new(password_hash)
+						  end
+
+						  def password=(new_password)
+						    @password = Password.create(new_password)
+						    self.password_hash = @password
+						  end
+
+					end
+		      # End of File
+		    EOF
+		  end
+		  puts "Created template Active Record model for #{name}"
+		end
+
 	end
 
 	class BuildMigration
 
-		def self.create_migration(migration_name, migration_path)
-		  name = migration_name[6..-1]
+		def self.create_migration(name, path)
+		  name = name[6..-1]
 		  table_name = name.downcase + "s" 
 		  # Because I don't trust the ActiveRecord pluralization engine... 
-		  File.open(migration_path, 'w+') do |f|
+		  File.open(path, 'w+') do |f|
 		    f.write(<<-EOF.strip_heredoc)
-		      class #{migration_name} < ActiveRecord::Migration
+		      class #{name} < ActiveRecord::Migration
 		        def change
 
 		          create_table :#{table_name} do |t|
@@ -199,13 +231,13 @@ module Adjective
 		  puts "Created template Active Record migration for #{name}"
 		end
 
-		def self.create_enemy_migration(migration_name, migration_path)
-		  name = migration_name[6..-1]
+		def self.create_enemy_migration(name, path)
+		  name = name[6..-1]
 		  table_name = name.downcase + "s"
 		  # Because I don't trust the ActiveRecord pluralization engine... 
-		  File.open(migration_path, 'w+') do |f|
+		  File.open(path, 'w+') do |f|
 		    f.write(<<-EOF.strip_heredoc)
-		      class #{migration_name} < ActiveRecord::Migration
+		      class #{name} < ActiveRecord::Migration
 		        def change
 		        create_table :#{table_name} do |t|
 		        t.string :name
@@ -234,11 +266,34 @@ module Adjective
 		  end
 		  puts "Created template Active Record migration for #{name}"
 		end
-	end
-	
-end
 
-require 'adjective/person'
+		def self.create_user_migration(name, path)
+			name = name[6..-1]
+		  table_name = name.downcase + "s"
+		  # Because I don't trust the ActiveRecord pluralization engine... 
+		  File.open(path, 'w+') do |f|
+		    f.write(<<-EOF.strip_heredoc)
+			      class #{name} < ActiveRecord::Migration
+						  def change 
+						  	create_table :users do |t|
+						  		t.string :name
+						  		t.string :email
+						  		t.string :password_hash
+
+						  		t.integer :current_character
+
+						  		t.timestamps
+						  	end
+						  end
+			      end
+		    EOF
+		  end
+		  puts "Created template Active Record migration for #{name}"
+		end
+		
+	end
+
+end
 
 # bill = Person.new("Bill", 45, 168, "5'8", 10)
 
@@ -249,3 +304,10 @@ require 'adjective/person'
 # bill.hunger_level
 
 # main = MainDisplay.new(bill)
+
+
+
+
+
+
+

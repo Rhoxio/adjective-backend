@@ -51,11 +51,26 @@ namespace :generate do
     migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(enemy_path)
-      raise "ERROR: Model file '#{model_path}' already exists"
+      raise "ERROR: Model file '#{enemy_path}' already exists"
     end
 
     Adjective::BuildModel.create_enemy(enemy_path, enemy_name)
     Adjective::BuildMigration.create_enemy_migration(migration_name, migration_path)
+
+  end
+
+  desc "Create a template user model. Includes BCrypt"
+  task :users do
+
+    user_model_path = APP_ROOT.join('app', 'models', 'user.rb')
+
+    user = "User"
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_user"]
+    path = APP_ROOT.join('db', 'migrate', filename)
+
+
+    Adjective::BuildModel.create_user(user_model_path, "User")
+    Adjective::BuildMigration.create_user_migration("CreateUser", path)
   end
 
 
@@ -109,6 +124,8 @@ namespace :generate do
       EOF
     end
   end
+
+
 
 
   desc "Create an empty model spec in spec, e.g., rake generate:spec NAME=user"
