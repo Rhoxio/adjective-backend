@@ -63,3 +63,11 @@ class Person
 	end
 
 end
+
+class Thing 
+
+	def self.print_stuff
+		puts "Stuff"
+	end
+	
+end

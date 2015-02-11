@@ -14,7 +14,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
-    adjective (0.0.1)
+    adjective (0.0.5)
     arel (5.0.1.20140414130214)
     backports (3.6.0)
     builder (3.2.2)
