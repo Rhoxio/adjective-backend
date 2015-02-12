@@ -179,20 +179,30 @@ module Adjective
 		  puts "Created template Active Record model for #{name}"
 		end
 
+		def self.create_location(path, name)
+			File.open(path, 'w+') do |f|
+				f.write(<<-EOF.strip_heredoc)
+					class #{name} < ActiveRecord::Base
+
+					end
+					# End of File
+				EOF
+			end
+			puts "Created template Active Record model for #{name}"
+		end
+
 	end
 
 	class BuildMigration
 
-		def self.create_migration(name, path)
+		def self.create_character_migration(name, path)
 		  name = name[6..-1]
-		  table_name = name.downcase + "s" 
-		  # Because I don't trust the ActiveRecord pluralization engine... 
 		  File.open(path, 'w+') do |f|
 		    f.write(<<-EOF.strip_heredoc)
 		      class #{name} < ActiveRecord::Migration
 		        def change
 
-		          create_table :#{table_name} do |t|
+		          create_table :characters do |t|
 		            t.string :name
 		            t.string :player_class
 		            t.string :gender
@@ -233,13 +243,11 @@ module Adjective
 
 		def self.create_enemy_migration(name, path)
 		  name = name[6..-1]
-		  table_name = name.downcase + "s"
-		  # Because I don't trust the ActiveRecord pluralization engine... 
 		  File.open(path, 'w+') do |f|
 		    f.write(<<-EOF.strip_heredoc)
 		      class #{name} < ActiveRecord::Migration
 		        def change
-		        create_table :#{table_name} do |t|
+		        create_table :enemys do |t|
 		        t.string :name
 		        t.string :enemy_class
 		        t.string :avatar
@@ -269,8 +277,6 @@ module Adjective
 
 		def self.create_user_migration(name, path)
 			name = name[6..-1]
-		  table_name = name.downcase + "s"
-		  # Because I don't trust the ActiveRecord pluralization engine... 
 		  File.open(path, 'w+') do |f|
 		    f.write(<<-EOF.strip_heredoc)
 			      class #{name} < ActiveRecord::Migration
@@ -290,7 +296,33 @@ module Adjective
 		  end
 		  puts "Created template Active Record migration for #{name}"
 		end
-		
+
+		def self.create_location_migration(name, path)
+			name = name[6..-1]
+		  File.open(path, 'w+') do |f|
+		    f.write(<<-EOF.strip_heredoc)
+			      class #{name} < ActiveRecord::Migration
+						  def change
+						  	create_table :locations do |t|
+						  		t.string :name
+
+						  		t.string :js_view
+						  		t.string :js_controller
+						  		t.string :js_battle
+
+						  		t.string :battle_background
+
+						  		t.integer :enemy_types, :array => true
+
+						  		t.string :coordinates
+						    end
+						  end
+			      end
+		    EOF
+		  end
+		  puts "Created template Active Record migration for #{name}"
+		end
+
 	end
 
 end

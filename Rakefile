@@ -15,7 +15,7 @@ namespace :generate do
     # APP_ROOT is defined in /config/environment.rb
     model_path     = APP_ROOT.join('app', 'models', 'character.rb')
 
-    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_characters")
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_characters"]
     migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(model_path)
@@ -23,7 +23,7 @@ namespace :generate do
     end
 
     Adjective::BuildModel.create_character(model_path, "Character")
-    Adjective::BuildMigration.create_migration("CreateCharacter", migration_path)
+    Adjective::BuildMigration.create_character_migration("CreateCharacter", migration_path)
 
   end
 
@@ -46,17 +46,27 @@ namespace :generate do
   end
 
   desc "Create a template user model. Includes BCrypt"
-  task :users do
+  task :user do
 
     user_model_path = APP_ROOT.join('app', 'models', 'user.rb')
 
-    user     = "User"
     filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_users"]
     path     = APP_ROOT.join('db', 'migrate', filename)
 
 
     Adjective::BuildModel.create_user(user_model_path, "User")
     Adjective::BuildMigration.create_user_migration("CreateUser", path)
+  end
+
+  desc "Create a template location model and migration."
+  task :location do
+    model_path = APP_ROOT.join('app', 'models', 'location.rb')
+
+    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_location"]
+    path     = APP_ROOT.join('db', 'migrate', filename)
+
+    Adjective::BuildModel.create_location(model_path, "Location")
+    Adjective::BuildMigration.create_location_migration("CreateLocation", path)
   end
 
 
