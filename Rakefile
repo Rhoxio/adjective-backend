@@ -12,50 +12,36 @@ namespace :generate do
   desc "rake generate:character NAME=User"
   task :character do
 
-    unless ENV.has_key?('NAME')
-      raise "Must specificy model name, e.g., rake generate:character NAME=character"
-    end
-
-    model_name     = ENV['NAME'].camelize
-    model_filename = ENV['NAME'].underscore + '.rb'
     # APP_ROOT is defined in /config/environment.rb
-    model_path     = APP_ROOT.join('app', 'models', model_filename)
+    model_path     = APP_ROOT.join('app', 'models', 'character.rb')
 
-    migration_name = "Create" + ENV['NAME'].capitalize
-    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_" + ENV['NAME'].underscore]
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_character")
     migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(model_path)
       raise "ERROR: Model file '#{model_path}' already exists"
     end
 
-    Adjective::BuildModel.create_character(model_path, model_name)
-    Adjective::BuildMigration.create_migration(migration_name, migration_path)
+    Adjective::BuildModel.create_character(model_path, "Character")
+    Adjective::BuildMigration.create_migration("CreateCharacter", migration_path)
 
   end
 
 # --Enemy Template Generator--
-  desc "rake generate:enemy NAME=enemy"
+  desc "rake generate:enemy"
   task :enemy do
 
-    unless ENV.has_key?('NAME')
-      raise "Must specificy model name, e.g., rake generate:character NAME=character"
-    end
+    enemy_path     = APP_ROOT.join('app', 'models', 'enemy.rb')
 
-    enemy_name     = ENV['NAME'].camelize
-    enemy_filename = ENV['NAME'].underscore + '.rb'
-    enemy_path     = APP_ROOT.join('app', 'models', enemy_filename)
-
-    migration_name = "Create" + ENV['NAME'].capitalize
-    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_" + ENV['NAME'].underscore]
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_enemy"]
     migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(enemy_path)
       raise "ERROR: Model file '#{enemy_path}' already exists"
     end
 
-    Adjective::BuildModel.create_enemy(enemy_path, enemy_name)
-    Adjective::BuildMigration.create_enemy_migration(migration_name, migration_path)
+    Adjective::BuildModel.create_enemy(enemy_path, "Enemy")
+    Adjective::BuildMigration.create_enemy_migration("CreateEnemy", migration_path)
 
   end
 
@@ -64,9 +50,9 @@ namespace :generate do
 
     user_model_path = APP_ROOT.join('app', 'models', 'user.rb')
 
-    user = "User"
-    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_user"]
-    path = APP_ROOT.join('db', 'migrate', filename)
+    user     = "User"
+    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_user"]
+    path     = APP_ROOT.join('db', 'migrate', filename)
 
 
     Adjective::BuildModel.create_user(user_model_path, "User")
