@@ -15,7 +15,7 @@ namespace :generate do
     # APP_ROOT is defined in /config/environment.rb
     model_path     = APP_ROOT.join('app', 'models', 'character.rb')
 
-    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_character")
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_characters")
     migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(model_path)
@@ -33,7 +33,7 @@ namespace :generate do
 
     enemy_path     = APP_ROOT.join('app', 'models', 'enemy.rb')
 
-    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_enemy"]
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_enemys"]
     migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(enemy_path)
@@ -51,7 +51,7 @@ namespace :generate do
     user_model_path = APP_ROOT.join('app', 'models', 'user.rb')
 
     user     = "User"
-    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_user"]
+    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_users"]
     path     = APP_ROOT.join('db', 'migrate', filename)
 
 
