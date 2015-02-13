@@ -16,15 +16,20 @@ It is written in mostly Javascript and Ruby. I am still deciding on what librari
 Create premade models and migrations with rake tasks:
 
 ```
-be rake generate:construct #Create a Development Suite with preset models, migrations, and ready-to-go tables. 
+be rake generate:construct 
+#Create a Development Suite with preset models, migrations, and ready-to-go tables. 
 
-be rake generate:character #Create a character model and migration file with specifications for an in-game character. 
+be rake generate:character 
+#Create a character model and migration file with specifications for an in-game character. 
 
-be rake generate:user #Create a user model and migration with BCrypt already integrated in to it. 
+be rake generate:user 
+#Create a user model and migration with BCrypt already integrated in to it. 
 
-be rake generate:enemy #Create a generic enemy model and migration; very similar to the character model.
+be rake generate:enemy 
+#Create a generic enemy model and migration; very similar to the character model.
 
-be rake generate:location #Create a specialized model and migration used for standard cardinal directions (and/or simple x/y) coordinates.
+be rake generate:location 
+#Create a specialized model and migration used for standard cardinal directions (and/or simple x/y) coordinates.
 
 
 ```
