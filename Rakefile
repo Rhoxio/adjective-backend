@@ -8,6 +8,9 @@ require 'active_support/core_ext'
 
 namespace :generate do
 
+  desc 'Creates a full development suite'
+  task :construct => [:user, :character, :enemy, :location]
+
 # Character Template Generator
   desc "rake generate:character NAME=User"
   task :character do
@@ -25,6 +28,7 @@ namespace :generate do
     Adjective::BuildModel.create_character(model_path, "Character")
     Adjective::BuildMigration.create_character_migration("CreateCharacter", migration_path)
 
+    sleep(0.1)
   end
 
 # --Enemy Template Generator--
@@ -33,7 +37,7 @@ namespace :generate do
 
     enemy_path     = APP_ROOT.join('app', 'models', 'enemy.rb')
 
-    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_enemys"]
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S') << "1", "create_enemies"]
     migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(enemy_path)
@@ -41,7 +45,7 @@ namespace :generate do
     end
 
     Adjective::BuildModel.create_enemy(enemy_path, "Enemy")
-    Adjective::BuildMigration.create_enemy_migration("CreateEnemy", migration_path)
+    Adjective::BuildMigration.create_enemy_migration("CreateEnemies", migration_path)
 
   end
 
@@ -50,23 +54,27 @@ namespace :generate do
 
     user_model_path = APP_ROOT.join('app', 'models', 'user.rb')
 
-    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_users"]
+    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S') << "2", "create_users"]
     path     = APP_ROOT.join('db', 'migrate', filename)
 
 
     Adjective::BuildModel.create_user(user_model_path, "User")
     Adjective::BuildMigration.create_user_migration("CreateUser", path)
+
+    sleep(0.1)
   end
 
   desc "Create a template location model and migration."
   task :location do
     model_path = APP_ROOT.join('app', 'models', 'location.rb')
 
-    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_location"]
+    filename = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S') << "3", "create_locations"]
     path     = APP_ROOT.join('db', 'migrate', filename)
 
     Adjective::BuildModel.create_location(model_path, "Location")
     Adjective::BuildMigration.create_location_migration("CreateLocation", path)
+
+    sleep(0.1)
   end
 
 
@@ -120,8 +128,6 @@ namespace :generate do
       EOF
     end
   end
-
-
 
 
   desc "Create an empty model spec in spec, e.g., rake generate:spec NAME=user"
