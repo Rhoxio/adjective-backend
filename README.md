@@ -10,14 +10,23 @@ It is written in mostly Javascript and Ruby. I am still deciding on what librari
 
 ### Quickstart
 
-1.  `bundle install`
-2.  `be shotgun`
+1.  `bundle install` #Install all of the gems needed...
+2.  `be shotgun` #Start the server!
 
-As needed, create models & migrations with the `rake` tasks:
+Create premade models and migrations with rake tasks:
 
 ```
-rake generate:migration  # Create an empty migration in db/migrate, e.g., rake generate:migration NAME=create_tasks
-rake generate:model      # Create an empty model in app/models, e.g., rake generate:model NAME=User
+be rake generate:construct #Create a Development Suite with preset models, migrations, and ready-to-go tables. 
+
+be rake generate:character #Create a character model and migration file with specifications for an in-game character. 
+
+be rake generate:user #Create a user model and migration with BCrypt already integrated in to it. 
+
+be rake generate:enemy #Create a generic enemy model and migration; very similar to the character model.
+
+be rake generate:location #Create a specialized model and migration used for standard cardinal directions (and/or simple x/y) coordinates.
+
+
 ```
 
 ### Contributing
