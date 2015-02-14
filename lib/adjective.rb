@@ -283,13 +283,3 @@ module Adjective
 	end
 
 end
-
-# bill = Person.new("Bill", 45, 168, "5'8", 10)
-
-# 5.times do 
-# 	bill.throw_ball
-# end
-
-# bill.hunger_level
-
-# main = MainDisplay.new(bill)

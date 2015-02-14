@@ -18,7 +18,7 @@ namespace :generate do
     # APP_ROOT is defined in /config/environment.rb
     model_path     = APP_ROOT.join('app', 'models', 'character.rb')
 
-    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S'), "create_characters"]
+    filename       = "%s_%s.rb" % [Time.now.strftime('%Y%m%d%H%M%S')<< "0", "create_characters"]
     migration_path = APP_ROOT.join('db', 'migrate', filename)
 
     if File.exist?(model_path)
