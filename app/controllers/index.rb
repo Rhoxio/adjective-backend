@@ -15,6 +15,10 @@ options '/users' do
     200
 end
 
+options '/enemies' do
+	200
+end
+
 get '/' do 
 	erb :index
 end
@@ -27,6 +31,11 @@ end
 get '/characters' do
 	@characters = Character.all
 	@characters.to_json
+end
+
+get '/enemies' do
+	@enemies = Enemy.all 
+	@enemies.to_json
 end
 
 post '/characters' do
