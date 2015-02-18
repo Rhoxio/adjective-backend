@@ -7,6 +7,8 @@ end
 
 set :protection, false
 
+
+# Post Options
 options '/characters' do
     200
 end
@@ -18,6 +20,8 @@ end
 options '/enemies' do
 	200
 end
+
+
 
 get '/' do 
 	erb :index
@@ -36,6 +40,11 @@ end
 get '/enemies' do
 	@enemies = Enemy.all 
 	@enemies.to_json
+end
+
+get '/enemy/:id' do
+	@enemy = Enemy.find(params[:id])
+	@enemy.to_json
 end
 
 post '/characters' do

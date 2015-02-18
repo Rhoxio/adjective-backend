@@ -17,6 +17,7 @@ class Character < ActiveRecord::Base
       return false
     end
   end
+
   def give_currency(amount) 
     if self.currency >= amount
       self.currency -= amount
@@ -24,10 +25,12 @@ class Character < ActiveRecord::Base
       return "Not enough currency..."
     end
   end
+
   def acquire_currency(amount)
     self.currency += amount
     self.save!
   end
+  
   def dead?
     if self.current_hp <= 0
       return true
@@ -35,6 +38,7 @@ class Character < ActiveRecord::Base
       return false
     end
   end
+
   def heal(healing)
     if self.dead? == false
       self.current_hp += healing
