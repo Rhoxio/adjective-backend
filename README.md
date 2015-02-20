@@ -17,7 +17,7 @@ The main merit of this API is the simple fact that I have provided a ton of temp
 2.  `be shotgun` Starts the server.
 3.  `be thin start` Starts a thin server. Requires restart when you make changes, but loads a LOT faster than Shotgun. 
 
-Create premade models and migrations with rake tasks:
+#Create premade models and migrations with rake tasks:
 
 ```
 be rake generate:construct 
