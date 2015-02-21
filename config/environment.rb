@@ -18,6 +18,7 @@ require 'active_record'
 require 'logger'
 require 'hirb'
 require 'adjective'
+require 'sinatra/cross_origin'
 
 require 'sinatra'
 require "sinatra/reloader" if development?

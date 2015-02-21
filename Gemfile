@@ -17,6 +17,7 @@ gem 'hirb'
 gem 'adjective'
 
 gem 'shotgun'
+gem 'sinatra-cross_origin'
 
 group :test do
   gem 'shoulda-matchers'

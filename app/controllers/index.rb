@@ -1,8 +1,12 @@
+configure do 
+	enable :cross_origin
+end
+
 before do
-	content_type :json
-
-	cors_set_access_control_headers
-
+  cross_origin :allow_origin => '*',
+  :allow_methods => [:get],
+  :allow_credentials => false,
+  :max_age => "172000"
 end
 
 set :protection, false
@@ -21,7 +25,9 @@ options '/enemies' do
 	200
 end
 
-
+options '/upload' do
+	200
+end
 
 get '/' do 
 	erb :index
@@ -82,6 +88,15 @@ post '/users' do
 		puts "Failed to create user"
 	end
 
+end
+
+post '/upload' do
+
+	File.open('app/images/' + params['file'][:filename], 'w') do |f|
+		f.write(params['file'][:tempfile].read)
+	end
+
+	return 'The file was successfully uploaded!'
 end
 	
 

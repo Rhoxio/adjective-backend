@@ -30,7 +30,7 @@ class Character < ActiveRecord::Base
     self.currency += amount
     self.save!
   end
-  
+
   def dead?
     if self.current_hp <= 0
       return true
@@ -53,6 +53,7 @@ class Character < ActiveRecord::Base
       return false
     end
   end
+  
   def located?
     self.location
   end
