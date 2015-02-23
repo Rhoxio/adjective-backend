@@ -9,7 +9,11 @@ Adjective is a game engine started by myself to help alleviate some of the monot
 It is written in mostly Javascript and Ruby. I am currently using Sinatra as opposed to Rails, since I don't think making an API requires all of the utility that Rails provides for creating apps. 
 
 I use ActiveRecord with Postgresql. It keeps things simple, yet I have the power to create relationships on a whim. 
-The main merit of this API is the simple fact that I have provided a ton of templated and readily-generatable databse content. You just have to run a few commands and you have API to serve games with up and running. 
+The main merit of this API is the simple fact that I have provided a ton of templated and readily-generatable databse content. You just have to run a few commands and you have API to serve games with up and running.
+
+### User Stories/Goals
+As a user, I want to be able to... 
+[X] 1. Create characters, enemies, locations, events, and bosses. [] 2. Set up parties [] 3. Conveniently write dialogue. [] 4. Use a UI that is clean and concise. [X] 5. Be able to set up a server easily.
 
 ### Quickstart
 
