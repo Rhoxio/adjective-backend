@@ -43,6 +43,21 @@ get '/characters' do
 	@characters.to_json
 end
 
+get '/characters/:users_characters' do
+	# Once I get character associations cleaned up, this will be trivial. 
+	character_list = []
+
+	character_ids = params[:users_characters].split(',')
+
+	character_ids.each do |character_id|
+		@character = Character.find(character_id)
+		character_list.push(@character)
+	end
+
+	return character_list.to_json
+
+end
+
 get '/enemies' do
 	@enemies = Enemy.all 
 	@enemies.to_json
