@@ -4,7 +4,7 @@ end
 
 before do
   cross_origin :allow_origin => '*',
-  :allow_methods => [:get],
+  :allow_methods => [:get, :post, :options],
   :allow_credentials => false,
   :max_age => "172000"
 end
@@ -21,13 +21,13 @@ options '/users' do
     200
 end
 
-options '/enemies' do
-	200
-end
+# options '/enemies' do
+# 	200
+# end
 
-options '/upload' do
-	200
-end
+# options '/upload' do
+# 	200
+# end
 
 get '/' do 
 	erb :index
@@ -92,7 +92,7 @@ end
 
 post '/upload' do
 
-	File.open('app/images/' + params['file'][:filename], 'w') do |f|
+	File.open('public/images/' + params['file'][:filename], 'w') do |f|
 		f.write(params['file'][:tempfile].read)
 	end
 
