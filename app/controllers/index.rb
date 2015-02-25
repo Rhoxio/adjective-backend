@@ -113,5 +113,10 @@ post '/upload' do
 
 	return 'The file was successfully uploaded!'
 end
+
+get '/picture/:img' do
+	content_type 'image/png'
+	send_file File.join('public', 'images', params[:img])
+end
 	
 
