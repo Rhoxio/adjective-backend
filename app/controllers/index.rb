@@ -114,6 +114,12 @@ post '/upload' do
 	return 'The file was successfully uploaded!'
 end
 
+post '/location' do 
+
+	@new_location = Location.new(params[:name], params[:background_path], params[:battle_background], params[:coordinates], params[:enemy_types]) 
+
+end	
+
 get '/picture/:img' do
 	content_type 'image/png'
 	send_file File.join('public', 'images', params[:img])
